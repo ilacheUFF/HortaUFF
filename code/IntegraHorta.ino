@@ -8,7 +8,7 @@
 * Defines do projeto
 */
 //GPIO do NodeMCU que o pino de comunicação do sensor está ligado.
-#define DHTPIN D1
+#define DHTPIN D8
 
  
 /* defines - wi-fi */
@@ -23,7 +23,8 @@
  
 #define DHTTYPE DHT22 // DHT 22 (AM2302), AM2321
 
-#define FLOW_SENSOR  2
+#define FLOW_SENSOR  12  // Pin 12 = D6
+#define FLOW_SENSOR_2  14  // Pin 12 = D6
 
 /* CONSTANTES PARA O SENSOR DE FLUXO*/ 
 long currentMillis = 0;
@@ -52,8 +53,8 @@ DHT dht(DHTPIN, DHTTYPE);
 /* Define sensores de temperatura da agua
  *  
  */
-// Data wire is plugged into digital pin 2 on the Arduino
-#define ONE_WIRE_BUS D2
+// Data wire is plugged into digital pin d7 on the Arduino
+#define ONE_WIRE_BUS D7
 
 // Setup a oneWire instance to communicate with any OneWire device
 OneWire oneWire(ONE_WIRE_BUS);  
@@ -300,19 +301,23 @@ void loop()
     /* Verifica se é o momento de enviar dados para o ThingSpeak */
     if( millis() - last_connection_time > INTERVALO_ENVIO_THINGSPEAK )
     {
-        temperatura_lida = 28 + temperatura_lida;
-        umidade_lida=5.5;
+        //temperatura_lida = 28 + temperatura_lida;
+        //umidade_lida=5.5;
         solarlida=lersolar();
         temp_a_1=ler_temp_agua(1);
         temp_a_2=ler_temp_agua(2);
         
         Serial.println(solarlida);
         
-        //temperatura_lida = dht.readTemperature();
-        //umidade_lida = dht.readHumidity();
+        temperatura_lida = dht.readTemperature();
+        umidade_lida = dht.readHumidity();
         sprintf(fields_a_serem_enviados,"field1=%.2f&field2=%.2f&field3=%.2f&field4=%.2f&field5=%.2f&field6=%.2f", temperatura_lida, umidade_lida,solarlida,vazao,temp_a_1,temp_a_2);
         envia_informacoes_thingspeak(fields_a_serem_enviados);
     }
+    temperatura_lida = dht.readTemperature();
+    umidade_lida = dht.readHumidity();
+    Serial.print("Temperatura");
+    Serial.println(temperatura_lida);
  
     delay(50);
 }
