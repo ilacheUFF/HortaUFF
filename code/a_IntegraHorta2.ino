@@ -34,7 +34,7 @@ const int chipSelect = D8;
 * defines - wi-fi 
 *****************/
 #define SSID_REDE "LABMAQ_Estufa" /* coloque aqui o nome da rede que se deseja conectar */
-#define SENHA_REDE "#trem015423" /* coloque aqui a senha da rede que se deseja conectar */
+#define SENHA_REDE "Coloque_Aqui_a_senha" /* coloque aqui a senha da rede que se deseja conectar */
 #define INTERVALO_ENVIO_THINGSPEAK 120000 /* intervalo entre envios de dados ao ThingSpeak (em ms) */
  
 /*************************
